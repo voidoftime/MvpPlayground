@@ -16,8 +16,8 @@ import dagger.Provides;
 public class MatchItemsModule {
     @Provides
     @Singleton
-    MatchItemsStore provideMatchItemsStore(){
-        return new InMemoryMatchItemsStore();
+    MatchItemsStore provideMatchItemsStore(InMemoryMatchItemsStore matchItemsStore){
+        return matchItemsStore;
     }
 
     @Provides

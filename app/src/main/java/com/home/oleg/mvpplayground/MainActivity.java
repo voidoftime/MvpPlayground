@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "before build component " + getApplication());
-        ((MainApp) getApplication()).getCounterComponent().inject(this);
+        ((MainApp) getApplication()).getMainComponent().inject(this);
 //        Log.d(TAG, ""+counterView);
         Log.d(TAG, "counterPresenter " + counterPresenter);
         Log.d(TAG, "foreignItemsPresenter " + foreignItemsPresenter);

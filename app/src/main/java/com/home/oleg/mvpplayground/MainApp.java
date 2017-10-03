@@ -3,25 +3,29 @@ package com.home.oleg.mvpplayground;
 
 import android.app.Application;
 
-import com.home.oleg.mvpplayground.counter.CounterComponent;
+import com.home.oleg.mvpplayground.api.di.ApiModule;
 import com.home.oleg.mvpplayground.counter.CounterModule;
-import com.home.oleg.mvpplayground.counter.DaggerCounterComponent;
+import com.home.oleg.mvpplayground.di.DaggerMainComponent;
+import com.home.oleg.mvpplayground.di.MainComponent;
 import com.home.oleg.mvpplayground.items.match.di.MatchItemsModule;
+import com.home.oleg.mvpplayground.settings.SettingsModule;
 
 public class MainApp extends Application {
 
-    private CounterComponent counterComponent;
+    private MainComponent mainComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        counterComponent = DaggerCounterComponent.builder()
+        mainComponent = DaggerMainComponent.builder()
+                .settingsModule(new SettingsModule())
+                .apiModule(new ApiModule())
                 .counterModule(new CounterModule())
                 .matchItemsModule(new MatchItemsModule())
                 .build();
     }
 
-    public CounterComponent getCounterComponent() {
-        return counterComponent;
+    public MainComponent getMainComponent() {
+        return mainComponent;
     }
 }

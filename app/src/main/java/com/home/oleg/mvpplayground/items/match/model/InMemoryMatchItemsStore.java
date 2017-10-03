@@ -3,32 +3,49 @@ package com.home.oleg.mvpplayground.items.match.model;
 
 import com.annimon.stream.IntPair;
 import com.annimon.stream.Stream;
+import com.home.oleg.mvpplayground.api.ItemsMatchWordsProvider;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import javax.inject.Inject;
+
 import io.reactivex.subjects.PublishSubject;
 
 public class InMemoryMatchItemsStore implements MatchItemsStore {
-    private List<WordPair> wordPairs = Arrays.asList(
-            new WordPair("world", "мир"),
-            new WordPair("concern", "беспокойство"),
-            new WordPair("sheep", "овца"),
-            new WordPair("car", "машина"),
-            new WordPair("bike", "велосипед")
-    );
+    ItemsMatchWordsProvider wordsProvider;
+
+    private List<WordPair> allWordPairs;
+    private List<WordPair> wordPairs=Collections.emptyList();
+//    = Arrays.asList(
+//            new WordPair("world", "мир"),
+//            new WordPair("concern", "беспокойство"),
+//            new WordPair("sheep", "овца"),
+//            new WordPair("car", "машина"),
+//            new WordPair("bike", "велосипед")
+//    );
     private List<Integer> foreignWordsOrder;
     private List<Integer> nativeWordsOrder;
     private String selectedForeignWord;
     private String selectedNativeWord;
     private PublishSubject<List<WordPair>> onWordsListChange = PublishSubject.create();
+    private int wordsOffset = 0;
+    private int maxWordsCountInSession = 3;
+    private boolean sessionPrepared=false;
 
-    public InMemoryMatchItemsStore() {
-        prepareSession();
+    @Inject
+    public InMemoryMatchItemsStore(ItemsMatchWordsProvider wordsProvider) {
+        this.wordsProvider = wordsProvider;
+        wordsProvider.getWords()
+                .subscribe(values -> {
+                    allWordPairs = values;
+
+                    prepareSession();
+                });
     }
+
 
     @Override
     public String getForeignSelectedWord() {
@@ -52,6 +69,7 @@ public class InMemoryMatchItemsStore implements MatchItemsStore {
 
     @Override
     public List<String> getForeignWords() {
+        if (!sessionPrepared) return Collections.emptyList();
         return Stream.of(foreignWordsOrder)
                 .map(wordPairs::get)
                 .map(WordPair::getForeignWord)
@@ -60,6 +78,7 @@ public class InMemoryMatchItemsStore implements MatchItemsStore {
 
     @Override
     public List<String> getNativeWords() {
+        if (!sessionPrepared) return Collections.emptyList();
         return Stream.of(nativeWordsOrder)
                 .map(wordPairs::get)
                 .map(WordPair::getNativeWord)
@@ -70,6 +89,10 @@ public class InMemoryMatchItemsStore implements MatchItemsStore {
     public void prepareSession() {
         foreignWordsOrder = new ArrayList<>();
         nativeWordsOrder = new ArrayList<>();
+        int sessionWordsCount = Math.min(maxWordsCountInSession, allWordPairs.size() - wordsOffset);
+        wordPairs = allWordPairs.subList(
+                wordsOffset,
+                wordsOffset + sessionWordsCount);
         Stream.range(0, wordPairs.size())
                 .forEach(index -> {
                     foreignWordsOrder.add(index);
@@ -77,6 +100,9 @@ public class InMemoryMatchItemsStore implements MatchItemsStore {
                 });
         Collections.shuffle(foreignWordsOrder);
         Collections.shuffle(nativeWordsOrder);
+        wordsOffset+=sessionWordsCount;
+        sessionPrepared=true;
+        onWordsListChange.onNext(wordPairs);
     }
 
     @Override
@@ -109,6 +135,9 @@ public class InMemoryMatchItemsStore implements MatchItemsStore {
 
         selectedForeignWord = null;
         selectedNativeWord = null;
+        if(wordPairs.isEmpty()){
+            prepareSession();
+        }
         onWordsListChange.onNext(wordPairs);
     }
 
