@@ -9,6 +9,8 @@ import com.home.oleg.mvpplayground.items.match.view.ForeignItemsView;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+
 public class ForeignItemsPresenterImpl implements ForeignItemsPresenter {
     public static final String FIPI = "FIPI";
     private ForeignItemsView itemsView;
@@ -17,7 +19,9 @@ public class ForeignItemsPresenterImpl implements ForeignItemsPresenter {
     @Inject
     public ForeignItemsPresenterImpl(MatchItemsStore matchItemsStore) {
         this.matchItemsStore = matchItemsStore;
-        matchItemsStore.getOnWordsListChange().subscribe(wordList -> {
+        matchItemsStore.getOnWordsListChange()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(wordList -> {
             itemsView.setItems(matchItemsStore.getForeignWords());
             itemsView.clearSelection();
         });

@@ -12,6 +12,8 @@ import java.util.Objects;
 
 import javax.inject.Inject;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 
 public class InMemoryMatchItemsStore implements MatchItemsStore {
@@ -31,6 +33,8 @@ public class InMemoryMatchItemsStore implements MatchItemsStore {
     private String selectedForeignWord;
     private String selectedNativeWord;
     private PublishSubject<List<WordPair>> onWordsListChange = PublishSubject.create();
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread());
     private int wordsOffset = 0;
     private int maxWordsCountInSession = 3;
     private boolean sessionPrepared=false;

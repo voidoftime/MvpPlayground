@@ -17,10 +17,11 @@ public class MainApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        mainComponent = createComponent();
+        if(mainComponent==null)
+            mainComponent = createComponent();
     }
 
-    private MainComponent createComponent() {
+    public MainComponent createComponent() {
         return DaggerMainComponent.builder()
                 .settingsModule(new SettingsModule())
                 .apiModule(new ApiModule())
@@ -31,5 +32,9 @@ public class MainApp extends Application {
 
     public MainComponent getMainComponent() {
         return mainComponent;
+    }
+
+    public void setMainComponent(MainComponent mainComponent) {
+        this.mainComponent = mainComponent;
     }
 }

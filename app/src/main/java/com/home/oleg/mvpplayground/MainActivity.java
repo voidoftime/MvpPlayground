@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println("MAIN ACTIVITY ON CREATE");
         setContentView(R.layout.activity_main);
         Log.d(TAG, "before build component " + getApplication());
         ((MainApp) getApplication()).getMainComponent().inject(this);
