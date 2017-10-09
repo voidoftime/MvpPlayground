@@ -17,8 +17,14 @@ public class MainApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if(mainComponent==null)
-            mainComponent = createComponent();
+        System.out.println("main app init");
+//        if(mainComponent==null)
+        if(isInitComponentOnCreate())
+            initComponent();
+    }
+
+    public void initComponent() {
+        mainComponent = createComponent();
     }
 
     public MainComponent createComponent() {
@@ -36,5 +42,9 @@ public class MainApp extends Application {
 
     public void setMainComponent(MainComponent mainComponent) {
         this.mainComponent = mainComponent;
+    }
+
+    protected boolean isInitComponentOnCreate(){
+        return true;
     }
 }

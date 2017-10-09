@@ -16,7 +16,7 @@ public class TestMainApp extends MainApp {
 
     @Override
     public MainComponent createComponent() {
-
+        System.out.println("test main app component build");
 
         return DaggerTestMainComponent.builder()
 //                .settingsModule(new TestSettingsModule())
@@ -26,5 +26,8 @@ public class TestMainApp extends MainApp {
                 .build();
     }
 
-
+    @Override
+    protected boolean isInitComponentOnCreate() {
+        return false;
+    }
 }

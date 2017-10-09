@@ -13,9 +13,12 @@ import dagger.Provides;
 @Module
 public class TestApiModule  extends ApiModule{
     public static TestItemsMatchWordsProvider testItemsMatchWordsProvider = new TestItemsMatchWordsProvider();
-    @Singleton
+//    @Singleton
+
     @Provides
     ItemsMatchWordsProvider getItemsMatchWordsProvider() {
+        System.out.println("TestApiModule getItemsMatchWordsProvider "+testItemsMatchWordsProvider.words);
         return testItemsMatchWordsProvider;
+//        return new TestItemsMatchWordsProvider();
     }
 }
