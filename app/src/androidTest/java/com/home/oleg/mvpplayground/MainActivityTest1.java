@@ -9,7 +9,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.home.oleg.mvpplayground.api.ItemsMatchWordsProvider;
-import com.home.oleg.mvpplayground.test.di.TestItemsMatchWordsProvider;
+import com.home.oleg.mvpplayground.testDi.TestItemsMatchWordsProvider;
 import com.home.oleg.mvpplayground.items.match.model.WordPair;
 
 import org.junit.Before;

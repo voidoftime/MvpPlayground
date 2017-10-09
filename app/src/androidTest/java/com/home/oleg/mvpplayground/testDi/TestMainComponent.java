@@ -1,4 +1,4 @@
-package com.home.oleg.mvpplayground.test.di;
+package com.home.oleg.mvpplayground.testDi;
 
 
 import com.home.oleg.mvpplayground.MainActivity;

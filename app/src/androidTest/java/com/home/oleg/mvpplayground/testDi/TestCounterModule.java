@@ -1,4 +1,4 @@
-package com.home.oleg.mvpplayground.test.di;
+package com.home.oleg.mvpplayground.testDi;
 
 
 import dagger.Module;

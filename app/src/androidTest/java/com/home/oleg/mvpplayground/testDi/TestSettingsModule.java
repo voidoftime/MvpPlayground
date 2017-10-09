@@ -1,8 +1,7 @@
-package com.home.oleg.mvpplayground.test.di;
+package com.home.oleg.mvpplayground.testDi;
 
 
 
-import com.home.oleg.mvpplayground.test.di.TestApplicationSettings;
 import com.home.oleg.mvpplayground.settings.ApplicationSettings;
 import com.home.oleg.mvpplayground.settings.SettingsModule;
 
